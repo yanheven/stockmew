@@ -1,4 +1,5 @@
 #include "http-retriver.h"
+#include "http-retriver-utils.h"
 
 #ifdef WINDOWS
 #include <Winsock2.h>
@@ -229,7 +230,6 @@ request_set_header (struct request *req, char *name, char *value,
 
 static struct request *prepare_request(char *host_name, char *full_path)
 {
-	char *meth_arg = NULL;
 	const char *meth = "GET";
 	struct request *req = NULL;
 
@@ -337,6 +337,21 @@ response_head_terminator (const char *start, const char *peeked, int peeklen)
 		return NULL;
 }
 
+struct recv_arg
+{
+	int s;
+	char* buf;
+	int len;
+	int flags;
+	int res;
+};
+
+void recv_with_timeout_callback(void* arg)
+{
+	struct recv_arg* rvarg = (struct recv_arg*) arg;
+	rvarg->res = recv(rvarg->s, rvarg->buf, rvarg->len, rvarg->flags);
+}
+
 char* receive_response(int sock, char** body, int* body_size)
 {
 	long bufsize = 512;
@@ -347,26 +362,37 @@ char* receive_response(int sock, char** body, int* body_size)
 	while (1)
 	{
 		const char *end;
-		int res, remain;
+		int remain;
+		struct recv_arg rvarg;
 
+		memset(&rvarg, 0, sizeof(struct recv_arg));
+		rvarg.s = sock;
+		rvarg.buf = buf + tail;
+		rvarg.len = bufsize - 1 - tail;
+		rvarg.flags = 0;
 		/* First, peek at the available data. */
-		res = recv(sock, buf + tail, bufsize - 1 - tail, 0/*MSG_PEEK*/);
-		if (res < 0)
+
+		if (run_with_timeout(30, recv_with_timeout_callback, (void*)&rvarg))
+		{
+			free (buf);
+			return NULL;
+		}
+		else if (rvarg.res < 0)
 		{
 			free (buf);
 			return NULL;
 		}
 
-		end = response_head_terminator(buf, buf + tail, res);
+		end = response_head_terminator(buf, buf + tail, rvarg.res);
 		if (end)
 		{
 			/* The data contains the terminator: we'll drain the data up
 			to the end of the terminator.  */
 			remain = end - (buf + tail);
-			*body = (char*)malloc(res - remain + 1);
-			memcpy(*body, end, res - remain);
-			(*body)[res - remain] = '\0';
-			*body_size = res - remain;
+			*body = (char*)malloc(rvarg.res - remain + 1);
+			memcpy(*body, end, rvarg.res - remain);
+			(*body)[rvarg.res - remain] = '\0';
+			*body_size = rvarg.res - remain;
 
 			if (remain == 0)
 			{
@@ -383,10 +409,10 @@ char* receive_response(int sock, char** body, int* body_size)
 			}
 		}
 
-		tail += res;
+		tail += rvarg.res;
 		buf[tail] = '\0';
 
-		if (res == 0)
+		if (rvarg.res == 0)
 		{
 			if (tail == 0)
 			{
@@ -476,7 +502,7 @@ int parse_response(char* response_string)
 
 char* read_body(int sock, char* buf, int bufsize)
 {
-	int res;
+	struct recv_arg rvarg;
 	int sum_read;
 	int empty_buf_start;
 	int granularity;
@@ -496,11 +522,23 @@ char* read_body(int sock, char* buf, int bufsize)
 
 	do
 	{
-		res = recv(sock, buf + empty_buf_start, bufsize - sum_read, 0);
-		if (res > 0)
+		memset(&rvarg, 0, sizeof(struct recv_arg));
+		rvarg.s = sock;
+		rvarg.buf = buf + empty_buf_start;
+		rvarg.len = bufsize - sum_read;
+		rvarg.flags = 0;
+		/* First, peek at the available data. */
+
+		if (run_with_timeout(30, recv_with_timeout_callback, (void*)&rvarg))
 		{
-			sum_read += res;
-			empty_buf_start += res;
+			free(buf);
+			return NULL;
+		}
+
+		if (rvarg.res > 0)
+		{
+			sum_read += rvarg.res;
+			empty_buf_start += rvarg.res;
 		}
 		if (sum_read >= bufsize)
 		{
@@ -508,13 +546,13 @@ char* read_body(int sock, char* buf, int bufsize)
 			bufsize += granularity;
 		}
 	}
-	while (res > 0);
+	while (rvarg.res > 0);
 
 	if (sum_read == bufsize)
 		buf = (char*)realloc (buf, bufsize + 1);
 	buf[sum_read]='\0';
 
-	if (res == -1)
+	if (rvarg.res == -1)
 	{
 		free(buf);
 		return NULL;
@@ -526,8 +564,6 @@ char* read_body(int sock, char* buf, int bufsize)
 int retrieve_stock_price(struct stock_price* price_info, char* url, parse_body_string_fun parse_body_string)
 {
 	int nret = 0;
-	int err = 0;
-	int reconnect = 0;
 	struct request * request = NULL;
 	char *host_name = NULL;
 	char *full_path = NULL;
