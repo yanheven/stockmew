@@ -13,4 +13,4 @@ typedef int (*parse_body_string_fun)(struct stock_price* price_info, char* strin
 
 int parse_body_string_sina(struct stock_price* price_info, char* string);
 
-#endif HTTP_BODY_PARSE
+#endif /* HTTP_BODY_PARSE */
