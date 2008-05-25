@@ -116,6 +116,8 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 				MAKELPARAM(SHMBOF_NODEFAULT | SHMBOF_NOTIFY,
 				SHMBOF_NODEFAULT | SHMBOF_NOTIFY));
 
+			SetDlgItemText(hDlg, IDC_EDIT_MONITOR_TIMEOUT, L"0.5");
+
 			break;
 		case WM_COMMAND:
             // An event has occured in the dialog box

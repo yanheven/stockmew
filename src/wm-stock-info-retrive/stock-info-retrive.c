@@ -160,15 +160,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	wchar_t *monitor_timeout_str;
 
 	struct stock_price price_info;
-	int loop_alarm = 0;
 	double low_trigger = 0;
 	double height_trigger = 0;
-	double lowest_price = 0;
-	double heighest_price  = 0;
 	double monitor_timeout = 0;
 	DWORD dwStartTime = 0;
 
-	char *url = "http://hq.sinajs.cn/list=sh";
+	char *url = "http://hq.sinajs.cn/list=";
 	char *full_url = NULL;
 	char *p;
 	wchar_t *wp;
@@ -198,6 +195,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	full_url = (char*) malloc(strlen(url) + wcslen(stock_code_str) + 1);
 	strcpy(full_url, url);
 	for (p = full_url; *p ; p++);
+	if (*stock_code_str == L'0')
+		strcpy(p, "sz");
+	else
+		strcpy(p, "sh");
+	p += 2;
 	wcstombs(p, stock_code_str, wcslen(stock_code_str) + 1);
 	low_trigger = wcstod(low_trigger_str, &wp);
 	height_trigger = wcstod(height_trigger_str, &wp);
