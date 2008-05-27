@@ -3,8 +3,8 @@ StockMew
 ========
                             µ±Ç°Ö÷Ò³: http://code.google.com/p/stockmew
 
-StockMew ÊÇÒ»¿î¿ªÔ´Ãâ·ÑµÄÉÏº£¹ÉÆ±½»Ò×ËùºÍÉîÛÚ¹ÉÆ±½»Ò×ËùÉÏÊÐµÄA ¹É¹ÉÆ±ÊµÊ±±¨¼ÛÐÅÏ¢»ñÈ¡
-¼°±ä»¯ÌáÐÑÈí¼þ£¬ÊÇ×÷ÕßÑ§Ï°Socket ±à³Ì¼°HTTP Ð­Òé¹ý³ÌÖÐµÄÒ»·ÝÏ°×÷¡£
+StockMew ÊÇÒ»¿î¿ªÔ´µÄÃâ·Ñ¹ÉÆ±Èí¼þ£¬Ëü°üÀ¨»ñÈ¡ÉÏº£¹ÉÆ±½»Ò×ËùºÍÉîÛÚ¹ÉÆ±½»Ò×ËùÉÏÊÐµÄA ¹É
+¹ÉÆ±ÊµÊ±±¨¼ÛÐÅÏ¢¼°±ä»¯ÌáÐÑµÈ¹¦ÄÜ£¬ÊÇ×÷ÕßÑ§Ï°Socket ±à³Ì¼°HTTP Ð­Òé¹ý³ÌÖÐµÄÒ»·ÝÏ°×÷¡£
 
 ¹ÉÆ±±¨¼ÛÊµÊ±Êý¾ÝÀ´Ô´ÓÚÐÂÀË²Æ¾­ÆµµÀ£¬×÷Õß²»¶ÔÊý¾ÝµÄ×¼È·ÐÔ¸ºÔð¡£ÓÉÓÚÐÂÀË¹«Ë¾²¢Î´¹«¿ªÌá¹©¸Ã
 Êý¾Ý»ñÈ¡API £¬ËùÒÔµ±Êý¾Ý»ñÈ¡API ¸Ä±ä¶øµ¼ÖÂµÄ³ÌÐòÎÞ·¨Õý³£ÔËÐÐ£¬ÇëÔ­ÁÂ×÷Õß½«²»ÄÜ¼°Ê±Í¨Öª
@@ -23,6 +23,6 @@ StockMew ÊÇ×÷ÕßÑ§Ï°¹ý³ÌÖÐµÄÒ»·ÝÏ°×÷£¬½«Æä¹«¿ª·¢²¼£¬²»ÒÔÈÎºÎÓ®ÀûÎªÄ¿µÄ£¬Ö»Ï£ÍûËüÄ
 
 StockMew µÄ×÷Õß¼°Ä¿Ç°Î¬»¤ÕßÎªAbacan <abacan@gmail.com>¡£
 
-¸ÐÐ» song_of_elf@hotmail.com Îª±¾Èí¼þÌá¹©µÄÍ¼±ê¡£
+¸ÐÐ»soelf <song_of_elf@hotmail.com> Îª±¾Èí¼þÌá¹©µÄÍ¼±ê¡£
 
-ÉÏÊöÎÄµµÖÐÌáµ½µÄ¡°ÐÂÀË¡±¼°¡°ÐÂÀË²Æ¾­ÆµµÀ¡±±êÊ¶°æÈ¨¹éÐÂÀË¹«Ë¾ËùÓÐ¡£
+ÉÏÊöÎÄµµÖÐÌáµ½µÄ¡°ÐÂÀË¡±¼°¡°ÐÂÀË²Æ¾­ÆµµÀ¡±±êÊ¶µÄ°æÈ¨¹éÐÂÀË¹«Ë¾ËùÓÐ¡£
