@@ -303,8 +303,7 @@ char *organize_request_string(struct request * req)
 	return request_string;
 }
 
-static const char *
-response_head_terminator (const char *start, const char *peeked, int peeklen)
+static const char * response_head_terminator (const char *start, const char *peeked, int peeklen)
 {
 	const char *p, *end;
 

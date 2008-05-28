@@ -9,8 +9,7 @@
 
 HANDLE g_hConnection;
 
-static void
-ws_cleanup (void)
+static void ws_cleanup (void)
 {
 	WSACleanup ();
 	if ( g_hConnection )
@@ -20,8 +19,7 @@ ws_cleanup (void)
 	}
 }
 
-static void
-set_sleep_mode (void)
+static void set_sleep_mode (void)
 {
 	typedef DWORD (WINAPI *func_t) (DWORD);
 	func_t set_exec_state;
@@ -109,8 +107,7 @@ int initialconnection()
 }
 
 /* Perform Windows specific initialization.  */
-void
-ws_startup (void)
+void ws_startup (void)
 {
 	WSADATA data;
 	WORD requested = MAKEWORD (1, 1);
@@ -208,7 +205,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (low_trigger >= height_trigger)
 	{
-		return -1;
+		wcscpy(message, L"e 高价提醒值应该大于低价提醒值。");
+                CreateProcess(exe_path, message, NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
+                return 0;
 	}
 
 	memset(&price_info, 0, sizeof(struct stock_price));
