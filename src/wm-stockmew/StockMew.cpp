@@ -137,7 +137,7 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 					int nRemain = 255;
 					int nCmdLineLen = 0;
 
-					if (IDCANCEL == MessageBox(NULL, L"软件运行将产生GPRS流量。\n请您确认已认真阅读随软件发布的README.TXT和HOWTO.TXT文件\n并正确设置了参数。", L"警告", MB_ICONWARNING | MB_OKCANCEL))
+					if (IDCANCEL == MessageBox(NULL, L"软件运行将产生GPRS流量。\n程序运行过程中参数不能修改，请您确认已认真阅读随软件发布的README.TXT和HOWTO.TXT文件，并正确设置了参数。", L"警告", MB_ICONWARNING | MB_OKCANCEL))
 						break;
 
 					szCmdLine = cmdLine;
