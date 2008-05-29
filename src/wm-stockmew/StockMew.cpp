@@ -137,9 +137,6 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 					int nRemain = 255;
 					int nCmdLineLen = 0;
 
-					if (IDCANCEL == MessageBox(NULL, L"软件运行将产生GPRS流量。\n程序运行过程中参数不能修改，请您确认已认真阅读随软件发布的README.TXT和HOWTO.TXT文件，并正确设置了参数。", L"警告", MB_ICONWARNING | MB_OKCANCEL))
-						break;
-
 					szCmdLine = cmdLine;
 					nRet = GetDlgItemText(hDlg, IDC_EDIT_STOCK_CODE, szCmdLine + nCmdLineLen, nRemain - 1);
 					wcstombs(tmp, szCmdLine + nCmdLineLen, 255);
@@ -164,7 +161,7 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 					}
 					else
 					{
-						MessageBox(NULL, L"最高价输入错误。", L"错误", MB_OK);
+						MessageBox(NULL, L"高价提醒值输入错误。", L"错误", MB_OK);
 						break;
 					}
 					nRet = GetDlgItemText(hDlg, IDC_EDIT_LOW_TRIGGER, szCmdLine + nCmdLineLen, nRemain - 1);
@@ -177,7 +174,7 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 					}
 					else
 					{
-						MessageBox(NULL, L"最低价输入错误。", L"错误", MB_OK);
+						MessageBox(NULL, L"低价提醒值输入错误。", L"错误", MB_OK);
 						break;
 					}
 					nRet = GetDlgItemText(hDlg, IDC_EDIT_MONITOR_TIMEOUT, szCmdLine + nCmdLineLen, nRemain - 1);
@@ -193,6 +190,9 @@ BOOL CALLBACK SetDialogProc(const HWND hDlg, const UINT uiMessage,
 						MessageBox(NULL, L"监控时间输入错误。", L"错误", MB_OK);
 						break;
 					}
+
+					if (IDCANCEL == MessageBox(NULL, L"软件运行将产生GPRS流量。\n程序运行过程中参数不能修改，请您确认已认真阅读随软件发布的README.TXT和HOWTO.TXT文件，并正确设置了参数。", L"警告", MB_ICONWARNING | MB_OKCANCEL))
+						break;
 
 					GetModuleFileNameW(NULL,exepath,sizeof(exepath)/sizeof(TCHAR));
 					szPath = wcsrchr(exepath,L'\\');

@@ -170,6 +170,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	wchar_t exe_path[256];
 	int str_len;
 
+	ws_startup ();
+
 	wcscpy(exe_path, argv[0]);
 	wp = wcsrchr(exe_path, L'\\');
 	str_len = &exe_path[255] - wp;
@@ -181,8 +183,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			return -1;
 		else
 			return 0;
-
-	ws_startup ();
 
 	stock_code_str = argv[1];
 	height_trigger_str = argv[2];
