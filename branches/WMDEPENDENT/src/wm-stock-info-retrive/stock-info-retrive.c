@@ -45,27 +45,10 @@ int initialconnection()
 
 	ZeroMemory(&connInfo, sizeof(connInfo));
 
-	for ( nIndex = 0; ; nIndex++ )
-	{
-		nret = 0;
-		memset (&DestInfo, 0, sizeof(CONNMGR_DESTINATION_INFO) );
-		if (ConnMgrEnumDestinations(nIndex, &DestInfo ) == E_FAIL )
-			break;
-
-		if (memcmp(DestInfo.szDescription, L"Internet", wcslen(L"Internet") * sizeof(TCHAR)) == 0 || memcmp(DestInfo.szDescription, L"internet",wcslen(L"internet")*sizeof(TCHAR)) == 0)
-		{
-			nret = 1;
-			break;
-		}
-	}
-
-	if (nret == 0)
-	{
-		hr = ConnMgrMapURL(_T("http://www.abacan.com/"), &guid, (DWORD*)&nIndex);
-		if (FAILED(hr)) return 0;
-		hr = ConnMgrEnumDestinations(nIndex, &DestInfo);
-		if (FAILED(hr)) return 0;
-	}
+	hr = ConnMgrMapURL(_T("http://www.abacan.com/"), &guid, (DWORD*)&nIndex);
+	if (FAILED(hr)) return 0;
+	hr = ConnMgrEnumDestinations(nIndex, &DestInfo);
+	if (FAILED(hr)) return 0;
 
 	connInfo.cbSize = sizeof(CONNMGR_CONNECTIONINFO);
 	connInfo.dwParams = CONNMGR_PARAM_GUIDDESTNET;
@@ -74,6 +57,7 @@ int initialconnection()
 	connInfo.bDisabled = FALSE;
 	connInfo.dwFlags = CONNMGR_FLAG_PROXY_HTTP | CONNMGR_FLAG_PROXY_WAP | CONNMGR_FLAG_PROXY_SOCKS4 | CONNMGR_FLAG_PROXY_SOCKS5;
 	connInfo.guidDestNet = DestInfo.guid;
+	
 
 	hr = ConnMgrEstablishConnectionSync(&connInfo, &g_hConnection, 10*1000, &dwStatus);
 	if (FAILED(hr))
@@ -112,11 +96,13 @@ void ws_startup (void)
 	WSADATA data;
 	WORD requested = MAKEWORD (1, 1);
 
-	if (initialconnection() == 0)
-	{
-		MessageBox(NULL, L"≥Ã–Ú≥ı ºªØ ß∞‹\n«ÎºÏ≤ÈGPRS …Ë÷√°£", L"¥ÌŒÛ", MB_OK);
-		exit(1);
-	}
+		if (initialconnection() == 0)
+		{
+			MessageBox(NULL, L"≥Ã–Ú≥ı ºªØ ß∞‹\n«ÎºÏ≤ÈGPRS …Ë÷√°£", L"¥ÌŒÛ", MB_OK);
+			exit(1);
+		}
+
+
 
 	if (WSAStartup (requested, &data) != 0)
 	{
